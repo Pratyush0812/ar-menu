@@ -21,6 +21,7 @@ app.add_middleware(
 # Path to Tesseract executable (set it to your installation path)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Update with your Tesseract path
 
+
 # Preprocess the image for better OCR accuracy
 def preprocess_image(image: Image.Image) -> Image.Image:
     image = image.convert('L')  # Grayscale
@@ -32,7 +33,6 @@ def preprocess_image(image: Image.Image) -> Image.Image:
 # Extract dish names and prices from image using OCR
 def extract_text_from_image(image: Image.Image) -> dict:
     ocr_text = pytesseract.image_to_string(image, lang='mal')
-    print(ocr_text)
     menu_items = {}
     lines = ocr_text.splitlines()
 
@@ -75,13 +75,6 @@ def translate_menu(menu_items: dict) -> dict:
 @app.post("/upload-menu/")
 async def upload_menu(file: UploadFile = File(...)):
     try:
-        print({"filename": file.filename, "size": len(await file.read())})
-        save_path = f"temp/{file.filename}"
-
-        # Save the image file locally
-        with open(save_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-
         # Open the image file
         image = Image.open(file.file)
         preprocessed_image = preprocess_image(image)
