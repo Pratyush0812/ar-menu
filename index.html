@@ -291,30 +291,6 @@
             // [name, path, position, scale, tag]
             const MODELS = [
                 [
-                    "chicken",
-                    "/models/chicken.glb",
-                    "0 0 0",
-                    "10 10 10",
-                    "Chicken Rice - 220 Rs",
-                    "A comforting and balanced dish of tender, spiced chicken served with fragrant steamed rice. Often accompanied by a spicy chutney or curry sauce, this dish makes for a satisfying and flavorful meal.",
-                ],
-                [
-                    "idali",
-                    "/models/idali.glb",
-                    "0 0 0",
-                    "2.5 2.5 2.5",
-                    "Idali - 40 Rs",
-                    "A popular South Indian breakfast dish made from a fermented rice and lentil batter, steamed into soft, fluffy cakes. Served with coconut chutney and sambar, idlis are light, healthy, and nutritious, ideal for a filling start to the day.",
-                ],
-                [
-                    "biryani",
-                    "/models/biryani.glb",
-                    "0 0 0",
-                    "2.5 2.5 2.5",
-                    "Biryani - 180 Rs",
-                    "An aromatic rice dish layered with marinated meat, typically chicken or mutton, and infused with spices. Biryani is slow-cooked to achieve a unique blend of rich flavors, making it a celebrated dish for festive occasions.",
-                ],
-                [
                     "curry",
                     "/models/curry.glb",
                     "0 0 0",
@@ -326,15 +302,15 @@
                     "stew",
                     "/models/stew.glb",
                     "0 0 0",
-                    ".8 .8 .8",
+                    "1.5 1.5 1.5",
                     "Stew - 150 Rs",
                     "A nourishing one-pot meal combining tender meat, vegetables, and a blend of spices simmered in a flavorful broth. Perfect for colder days, stew offers a comforting blend of textures and hearty flavors.",
                 ],
                 [
                     "fried-rice",
                     "/models/fried-rice.glb",
-                    "0 0 0",
-                    ".01 .01 .01",
+                    "0 1 0",
+                    ".02 .02 .02",
                     "Fried Rice - 80 Rs",
                     "A savory stir-fried rice dish mixed with vegetables, eggs, and occasionally meat, seasoned with soy sauce and spices. Quick to prepare and full of flavor, fried rice is a favorite for those looking for a satisfying meal.",
                 ],
@@ -345,6 +321,30 @@
                     ".25 .25 .25",
                     "Omelette - 50 Rs",
                     "A fluffy, protein-rich dish made from beaten eggs, often filled with cheese, herbs, or vegetables. Omelettes are versatile and quick to prepare, making them a popular breakfast choice around the world.",
+                ],
+                [
+                    "idali",
+                    "/models/idali.glb",
+                    "0 0 0",
+                    "2.5 2.5 2.5",
+                    "Idali - 40 Rs",
+                    "A popular South Indian breakfast dish made from a fermented rice and lentil batter, steamed into soft, fluffy cakes. Served with coconut chutney and sambar, idlis are light, healthy, and nutritious, ideal for a filling start to the day.",
+                ],
+                [
+                    "chicken",
+                    "/models/chicken.glb",
+                    "0 0 0",
+                    "10 10 10",
+                    "Chicken Rice - 120 Rs",
+                    "A comforting and balanced dish of tender, spiced chicken served with fragrant steamed rice. Often accompanied by a spicy chutney or curry sauce, this dish makes for a satisfying and flavorful meal.",
+                ],
+                [
+                    "biryani",
+                    "/models/biryani.glb",
+                    "0 0 0",
+                    "2.5 2.5 2.5",
+                    "Biryani - 180 Rs",
+                    "An aromatic rice dish layered with marinated meat, typically chicken or mutton, and infused with spices. Biryani is slow-cooked to achieve a unique blend of rich flavors, making it a celebrated dish for festive occasions.",
                 ],
                 [
                     "pizza",
@@ -359,7 +359,7 @@
                     "/models/sandwich.glb",
                     "0 0 0",
                     ".1 .1 .1",
-                    "Sandwich - 100 Rs",
+                    "Sandwich - 99 Rs",
                     "A convenient, layered meal with fresh vegetables, cheese, and meats between slices of bread. Customizable and portable, sandwiches are a quick option for a satisfying and balanced snack or meal.",
                 ],
             ];
@@ -417,24 +417,31 @@
                         formData.append("file", file);
 
                         // put your ip address
-                        fetch("https://527a-14-139-226-226.ngrok-free.app/upload-menu/", {
-                            method: "POST",
-                            body: formData,
-                        })
+                        fetch(
+                            "https://527a-14-139-226-226.ngrok-free.app/upload-menu/",
+                            {
+                                method: "POST",
+                                body: formData,
+                            }
+                        )
                             .then((response) => response.json())
                             .then((data) => {
                                 if (data.menu) {
                                     console.log("Translated Menu:", data.menu);
 
                                     // Filter MODELS to include only items that match keys in data.menu
-                                    let arr = MODELS.filter((val) => {
-                                        return Object.keys(data.menu).some(
-                                            (key) =>
+                                    arr = [];
+                                    for (const key of Object.keys(data.menu)) {
+                                        MODELS.forEach((val) => {
+                                            if (
                                                 val[0]
                                                     .toLowerCase()
                                                     .includes(key.toLowerCase())
-                                        );
-                                    });
+                                            ) {
+                                                arr.push(val);
+                                            }
+                                        });
+                                    }
 
                                     // Update the filtered array with the menu prices from data.menu
                                     arr = arr.map((val) => {
