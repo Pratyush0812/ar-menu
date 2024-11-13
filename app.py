@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 # Path to Tesseract executable (set it to your installation path)
-pytesseract.pytesseract.tesseract_cmd = '/opt/homebrew/bin/tesseract'  # Update with your Tesseract path
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Update with your Tesseract path
 
 # Preprocess the image for better OCR accuracy
 def preprocess_image(image: Image.Image) -> Image.Image:
